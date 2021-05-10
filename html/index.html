@@ -10,13 +10,15 @@
 </head>
 <body>
     <div class="container">
+        <div class="title"><b>Login</b></div>
+        
         <label for="uname"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" id="username">
     
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" id="password" onkeydown="enter(this)">
+        <input type="password" placeholder="Enter Password" id="password">
     
-        <button type="submit" onclick="login()">Login</button>
+        <button id="submit-button" type="submit" onclick="login()">Login</button>
         <a class="register" href="register.html">Register</a>
       </div>
 </body>

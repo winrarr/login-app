@@ -12,6 +12,12 @@ body {
     justify-content: center;
 }
 
+.title {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+}
+
 /* Full-width inputs */
 input[type=text], input[type=password] {
     background-color: hsl(0, 8%, 17%);

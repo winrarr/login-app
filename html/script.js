@@ -3,7 +3,11 @@ document.addEventListener('DOMContentLoaded', setup, false)
 function setup() {
     document.getElementById("password").addEventListener("keydown", event => {
         if (event.key == "Enter") {
-          login()
+            if (document.getElementById("submit-button").innerHTML == "Login") {
+                login()
+            } else {
+                register()
+            }
         }
     })
 }
@@ -11,9 +15,7 @@ function setup() {
 var session = null
 
 async function login() {
-    const pass = new TextEncoder().encode(document.getElementById("password").value)
-    console.log(await crypto.subtle.digest("SHA-256", pass))
-    alert(document.getElementById("password").value)
+    const pass = await sha256(document.getElementById("password").value)
 
     const response = await fetch("/login", {
         method: "POST",
@@ -28,7 +30,7 @@ async function login() {
 }
 
 async function register() {
-    const pass = new TextEncoder().encode(document.getElementById("password").value)
+    const pass = await sha256(document.getElementById("password").value)
 
     alert(await crypto.subtle.digest("SHA-256", pass))
     const response = await fetch("/register", {
@@ -43,6 +45,17 @@ async function register() {
     location.href = "frontpage.html"
 }
 
-function sessionid() {
-    console.log(document.cookie)
+async function sha256(message) {
+    // encode as UTF-8
+    const msgBuffer = new TextEncoder().encode(message);                    
+
+    // hash the message
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+    // convert ArrayBuffer to Array
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+    // convert bytes to hex string                  
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
 }
