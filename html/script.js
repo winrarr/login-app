@@ -19,10 +19,10 @@ async function login() {
 
     const response = await fetch("/login", {
         method: "POST",
-        body: {
+        body: JSON.stringify({
             username: document.getElementById("username").value,
             password: pass
-        }
+        })
     })
     document.cookie = await response.text()
 
@@ -30,19 +30,19 @@ async function login() {
 }
 
 async function register() {
-    const pass = await sha256(document.getElementById("password").value)
+    const hPass = await sha256(document.getElementById("password").value)
 
-    alert(await crypto.subtle.digest("SHA-256", pass))
-    const response = await fetch("/register", {
+    const response = await fetch("http://localhost:8000/api/register", {
         method: "POST",
-        body: {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
             username: document.getElementById("username").value,
-            password: pass
-        }
+            hPass: hPass
+        })
     })
     document.cookie = await response.text()
 
-    location.href = "frontpage.html"
+    // location.href = "frontpage.html"
 }
 
 async function sha256(message) {
