@@ -6,16 +6,13 @@ var sessions = require("../session-config.js")
 
 routes.post("", (req, res) => {
     const username = req.body.username
-    const hashedPassword = crypto.createHash("sha256")
-                            .update(req.body.password)
+    const hhPass = crypto.createHash("sha256")
+                            .update(req.body.hPass)
                             .digest("hex")
-
-    console.log(username)
-    console.log(hashedPassword)
 
     const sql = "select * from user where upper(username)=upper(?) and password=?"
 
-    db.get(sql, [username, hashedPassword], (err, row) => {
+    db.get(sql, [username, hhPass], (err, row) => {
         if (typeof row == "undefined") {
             res.status(401).send()
         } else {
